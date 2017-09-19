@@ -1,0 +1,100 @@
+@charset "utf-8";
+
+html,body,header,main,nav,footer,article,section,div,p,h1,h2,h3,h4,h5,ul,ol,li,dl,dt,dd,input{margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased}
+ul,ol{list-style:none}
+a{text-decoration:none;}
+img{vertical-align:top;border:0 none;}
+em,i{font-style:normal;}
+input{outline:none}
+input:-webkit-autofill{-webkit-box-shadow: 0 0 0px 1000px white inset;}//解决在chrome中自动完成表单后input出现黄色背景
+button,input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance: none;}
+
+html {
+    font-size:20px; /* 10/16=62.5%  20/16=125% */
+}
+@media only screen and (min-width:360px) {
+    html {
+        font-size: 140.625% !important /* 360/2.56=140.625 */
+    }
+}
+@media only screen and (min-width:375px) {
+    html {
+        font-size: 146.484375% !important
+    }
+}
+@media only screen and (min-width:414px) {
+    html {
+        font-size: 161.71875% !important
+    }
+}
+@media only screen and (min-width:480px) {
+    html {
+        font-size: 187.5% !important
+    }
+}
+@media only screen and (min-width:568px) {
+    html {
+        font-size: 221.875% !important
+    }
+}
+@media only screen and (min-width:640px) {
+    html {
+        font-size: 250% !important
+    }
+}
+@media only screen and (min-width:667px) {
+    html {
+        font-size: 260.546875% !important
+    }
+}
+@media only screen and (min-width:720px) {
+    html {
+        font-size: 281.25% !important
+    }
+}
+@media only screen and (min-width:736px) {
+    html {
+        font-size: 287.5% !important
+    }
+}
+@media only screen and (min-width:768px) {
+    html {
+        font-size: 300% !important
+    }
+}
+@media only screen and (min-width:1024px) {
+    html {
+        font-size: 400% !important
+    }
+}
+@media only screen and (min-width:1080px) {
+    html {
+        font-size: 421.875% !important
+    }
+}
+@media only screen and (min-width:1280px) {
+    html {
+        font-size: 500% !important
+    }
+}
+@media only screen and (min-width:1366px) {
+    html {
+        font-size: 533.59375% !important
+    }
+}
+@media only screen and (min-width:1440px) {
+    html {
+        font-size: 562.5% !important
+    }
+}
+@media only screen and (min-width:1920px) {
+    html {
+        font-size: 750% !important
+    }
+}
+@media only screen and (min-width:2560px) {
+    html {
+        font-size: 1000% !important
+    }
+}
