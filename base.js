@@ -127,8 +127,11 @@ var query = {
             };
         },
 
-
-        copyToClipboard : function (txt) {//复制
+        /**
+         * copy
+         * @param {String} txt    [txt]
+         */
+        copyToClipboard : function (txt) {
             if (window.clipboardData) {
                 window.clipboardData.clearData();
                 window.clipboardData.setData("Text", txt);

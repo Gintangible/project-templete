@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .myCanvas{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
+
+</head>
+<body>
+
+<img data-src="test" src="" alt="">
+
+<img id="test" width="130" src="http://c.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=437c9ee6b80e7bec238f0be51a1e950e/b3fb43166d224f4a5ad9f9fa09f790529922d193.jpg" data-original="http://img05.tooopen.com/images/20150820/tooopen_sy_139205349641.jpg">
+
+
+<script src="lazyload.js"></script>
+
+<script>
+    lazyload({
+        elem : document.getElementById('test'),
+        original : 'data-original',
+        container : 'document',
+        event : 'scroll',
+        fadeIn : true
+    });
+</script>
+</body>
+</html>
