@@ -20,48 +20,43 @@ lazyload = function( config ){
    var ele = config.ele,//lazy加载父级容器
        imgAry = [], //lazy元素数组
        original = config.original || 'data-src',
-       doc = document.body || document.documentElement,
+       doc = document,
+       doc_body = doc.body || doc.documentElement,
        lazyNum = 0, //已加载的数量
-       loadObj = {},
+       heightAry = [],//图片高度的数组集合
        distance = config.distance || 200,//lazy加载距离
        animate = config.animate;
 
    function initElementMap() { //遍历获取图片集合
        var imgs = ele.querySelectorAll(ele + '[' + original +']'),
            i, j, len, lylen;
-
-       //将需要lazy加载的图片放入一个数组
+       //获取lazy图数组
        for(i = 0; len = imgs.length; i < len; i++){
            imgAry.push( imgs[i] );
        }
 
-       //获取lazy图片的scrollTop
+       //获取lazy图片的scrollTop数组集合
        for( j = 0, lylen = imgAry.length; j < lylen; j++){
-            var oImg = imgAry[j],
-                eleTop = getEleTop(oImg);
-
-            if( loadObj[eleTop] ){
-                loadObj[eleTop].push( j );
-            }else{
-                //+++
-                var topAry = [];
-                topAry[0] = j;
-                loadObj[eleTop] = topAry;
-                lazyNum ++;
-            }
+            heightAry.push( getEleTop(imgAry[j]) );
+            lazyNum++;
        }
    }
    
    function loader() {
         if( !lazyNum ) return;//无lazy图
-        var getScrollTop = doc.scrollTop,
-            height = doc.clientHeight,//显示窗口页面高度
-            downTop = getScrollTop + height;
+        var getScrollTop = doc_body.scrollTop,
+            height = doc_body.clientHeight,//显示窗口页面高度
+            downScrollTop = getScrollTop + height,//页面底部到页面顶部的距离
+            imgShowHeight = distance + downScrollTop,//图片显示的高度
+            l,len;
 
-
-
-
-
+        for( l = 0; len = imgAry.length; l < len; l++){
+            if( imgShowHeight > heightAry[l]){
+                imgAry[l].src = imgAry[l].getAttribute(original);
+                imgAry[l].removeAttribute(original);
+                lazyNum --;
+            }
+       }
        
    }
 
@@ -79,15 +74,12 @@ lazyload = function( config ){
    }
 
 
-
-
-
     function init() {
         initElementMap();
         loader();
     }
 
-    init();
-
+    //绑定事件,依赖base
+    query.add(doc.body,'scroll', init);
 
 };
