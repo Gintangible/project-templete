@@ -47,9 +47,10 @@ lazyload = function( config ){
             l,len;
 
         for( l = 0, len = imgAry.length; l < len; l++){
-            if( imgShowHeight > heightAry[l]){
+            if( imgShowHeight > heightAry[l] && imgAry[l].getAttribute(original) ){//已加载图片，中断scroll事件
                 imgAry[l].src = imgAry[l].getAttribute(original);
                 imgAry[l].removeAttribute(original);
+                animate && imgAry[l].animate;//是否用动画
                 lazyNum --;
             }
        }
