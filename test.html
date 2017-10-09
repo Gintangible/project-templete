@@ -10,6 +10,7 @@
             border: 1px solid #0bacff;
         }
     </style>
+    <script src="Gintangible.js"></script>
 
 
 </head>
@@ -21,13 +22,29 @@
 
 
 <script src="base.js"></script>
-<script src="lazyload.js"></script>
+<!--<script src="lazyload.js"></script>-->
+<script src="jquery-3.2.1.js"></script>
 
 <script>
-    lazyload({
-        original : 'a',
-        container : 'document',
-    });
+//    lazyload({
+//        original : 'a',
+//        container : 'document',
+//    });
+    var settting = {
+            first : 'test',
+            second : 'say'
+        },
+        rep = {
+            first: 'test',
+            third : 'dfas'
+        }
+
+//    G.extend(true);
+    var test = G.extend(settting,rep);
+    console.log(test);
+//    var result1 = $.extend(settting,rep);
+//    console.log(result1);
+
 </script>
 </body>
 </html>
