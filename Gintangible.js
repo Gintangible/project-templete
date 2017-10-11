@@ -70,17 +70,49 @@
             //（返回新的元素集）
             pushStack : function ( elems ) {
                 //建立新的匹配的元素
-                var ret = xQuery.merge( this,constructor(), elems );
+                var ret = xQuery.merge( this.constructor(), elems );
 
                 ret.prevObject = this;
 
                 return ret;
             },
 
+            //对匹配集合中的每个元素执行回调。
+            each : function ( callback ) {
+                return xQuery.each( this, callback );
+            },
+
+            map : function () {
+                return this.pushStack( xQuery.map( this, function ( elem, i ) {
+                    return callback.call( elem, i, elem );
+                } ) );
+            },
+
+            slice : function () {
+                return this.pushStack( slice.apply( this, arguments ) )
+            },
+
+            first : function () {
+                return this.eq( 0 );
+            },
+
+            last : function () {
+                return this.eq( -1 );
+            },
+
+            eq : function ( i ) {
+                var len = this.length,
+                    j = + i + ( i < 0 ? len : 0 );
+                return this.pushStack( j >= 0 && j < len ? [ this[j] ] : []  );
+            },
+
+            end : function () {
+              return this.prevObject || this.constructor();
+            },
 
             // 内部调用，表现为原声，而不是xQuery method
             push: push,
             sort: arr.sort,
             splice: arr.splice
         };
-})
+});
