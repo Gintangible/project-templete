@@ -2,9 +2,10 @@
     
     "use strict"; //严格模式
 
-    //做cmd 挂载
+    //支持cmd and amd
     if( typeof module === "object" && typeof  module.exports === "object" ){
-        module.exports = global.document ? factory( global, true ) :
+        module.exports = global.document ?
+            factory( global, true ) :
             function ( w ) {
                 if( !w.document ){
                     throw new Error("jQuery requires a window with a document");
@@ -17,6 +18,22 @@
     }
     
 })( typeof window !== "undefined" ? window : this, function ( window, noGlobal ) {
+
+    //jQuery的13大模块
+    // 核心方法
+    // 回调系统
+    // 异步队列
+    // 数据缓存
+    // 队列操作
+    // 选择器引
+    // 属性操作
+    // 节点遍历
+    // 文档处理
+    // 样式操作
+    // 属性操作
+    // 事件体系
+    // AJAX交互
+    // 动画引擎
 
     "use strict";
 
