@@ -34,7 +34,6 @@
 				return factory( w );
 			};
 	} else {
-		console.log( global, factory)
 		factory( global );
 	}
 
