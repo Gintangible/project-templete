@@ -310,6 +310,7 @@ jQuery.extend( {
 		proto = getProto( obj );
 
 		// Objects with no prototype (e.g., `Object.create( null )`) are plain
+
 		if ( !proto ) {
 			return true;
 		}

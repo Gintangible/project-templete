@@ -20,13 +20,20 @@
 })( typeof window !== "undefined" ? window : this, function ( window, noGlobal ) {
 
     //jQuery的13大模块
-    //给jquery添加一些变量和方法（100-194）
-    // 核心方法( 196-264)
-    //扩展工具（265-510）
-    //sizzle: 复杂选择器（539-2805）?
-    //callback: 回调系统(3275-3467)  函数统一管理
-    //延迟对象：Deferred (3510-3850) 对异步的统一管理
+    // 核心方法// 回调系统// 异步队列// 数据缓存// 队列操作// 选择器// 属性操作// 节点遍历// 文档处理// 样式操作// 属性操作// 事件体系// AJAX交互// 动画引擎
+    //给jquery添加一些变量和方法  (100-194)
+    // 核心方法 (196-264)
+    //扩展工具  (265-510)
+    //sizzle: 复杂选择器 (539-2805)?
+    //callback: 回调系统    (3275-3467)  函数统一管理
+    //Deferred：(异步队列)延迟对象   (3510-3850) 对异步的统一管理
     //support 功能检测(?-?)
+    //数据缓存 data()   (-4225)
+    //队列操作 queue    (4356-)
+    //事件体系 event (4972-5612)
+    //样式操作
+    //动画引擎
+    //属性操作
 
     "use strict";
 
@@ -44,6 +51,32 @@
 
     var indexOf = arr.indexOf;
 
+    var class2type = {};
+
+    var toString = class2type.toString;
+
+    var hasOwn = class2type.hasOwnProperty;
+
+    var fnToString = hasOwn.toString;
+
+    var ObjectFunctionString = fnToString.call( Object );
+
+    var support = {};
+
+
+        function DOMEval( code, doc ) {
+            doc = doc || document;
+            var script = doc.createElement("script");
+            script.text = code;
+            doc.head.appendChild( script ).parentNode.removeChild( script );
+        }
+
+    //全局符号
+    //在 .eslintrc.json 中定义全局会造成全局危险
+    //在其他情况是有问题的，对本模块来说，是安全的
+
+
+
 
     var version = '1.0.0',
         // jQuery对象不是通过 new jQuery 创建的，而是通过 new jQuery.fn.init 创建的
@@ -51,9 +84,23 @@
         //构造jQuery对象
         jQuery = function ( selector, context ) {
             return new jQuery.fn.init( selector, context );
+        },
+
+        // Support: Android <=4.0 only
+        // Make sure we trim BOM and NBSP
+        rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
+
+        // Matches dashed string for camelizing
+        rmsPrefix = /^-ms-/,
+        rdashAlpha = /-([a-z])/g,
+
+        // Used by jQuery.camelCase as callback to replace()
+        fcamelCase = function( all, letter ) {
+            return letter.toUpperCase();
         };
 
-        //jQuery 数组方法
+
+    //jQuery 数组方法
         jQuery.fn = jQuery.prototype = {
 
             jquery : version,
@@ -195,7 +242,7 @@
         };
 
 
-        //jQuery 类型检测
+        //jQuery 扩展工具
         jQuery.extend({
 
             noop : function () {},
@@ -206,8 +253,94 @@
 
             isWindow : function ( obj ) {
                 return obj != null && obj === obj.window;
+            },
+            
+            isNumeric : function ( obj ) {//number + string number
+                var type = jQuery.type( obj );
+                return ( type === "number" || type === "string" ) &&
+                        !isNaN( obj - parseFloat( obj ) );
+            },
+
+            //基本对象检测
+            isPlainObject : function ( obj ) {
+                var proto, Ctor;
+                // 使用 negatives 检测
+                // 使用原始对象方法而不是jquery.type
+                if( !obj || toString.call( obj ) !== "[object Object]"){
+                    return false;
+                }
+                proto = getProto( obj );
+
+                //没有原型的对象（例如，对象“创建（空）”）是普通的。??
+                if( !proto ){
+                    return true;
+                }
+
+                //具有原型的对象是基本对象，它们是由全局对象函数构造的。
+                Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
+                return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
+            },
+
+            isEmptyObject: function ( obj ) {
+                var name;
+                for( name in obj ){
+                    return false;
+                }
+                return true;
+            },
+
+            type : function ( obj ) {
+                if( obj == null ){
+                    return obj + "";//返回成字符串undefined
+                }
+
+                // Support: Android <=2.3 only (functionish RegExp)
+                //class2type[ toString.call( obj ) ] ??为啥不直接使用 typeof
+                return typeof obj === "object" || typeof obj === "function" ?
+                        class2type[ toString.call( obj ) ] || "object" :
+                        typeof obj;
+            },
+
+            //在全局上下文中执行脚本，
+            globalEval : function ( code ) {
+                DOMEval( code );
+            },
+
+            //转换为camelCase;供 css 和数据模块使用
+            // Support: IE <=9 - 11, Edge 12 - 13
+            // Microsoft forgot to hump their vendor prefix (#9572)
+            camelcase : function ( string ) {
+              return string.replace( rmsPrefix, "ms-").replace( rdashAlpha, fcamelCase );
+            },
+
+            each : function ( obj, callback ) {
+                var lenght, i = 0;
+
+                if( isArrayLike( obj ) ){
+
+                }
+            },
+
+
+
+        });
+
+        //判断是否是数组/类数组
+        // Support: real iOS 8.2 only (not reproducible in simulator)
+        // `in` check used to prevent JIT error (gh-2145)
+        // hasOwn isn't used here due to false negatives
+        // regarding Nodelist length in IE
+        function isArrayLike( obj ) {
+            var length = !!obj && "length" in obj && obj.length,
+                type = jQuery.type( obj );
+
+            if( type === "function" || jQuery.isWindow( obj ) ){
+                return false;
             }
-        })
+            return type === "array" || length === 0 || //数组、
+                    typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+
+        }
 
 
 
