@@ -240,6 +240,7 @@
             return target;
 
         };
+        //jQuery 扩展函数end
 
 
         //jQuery 扩展工具
@@ -317,13 +318,156 @@
                 var lenght, i = 0;
 
                 if( isArrayLike( obj ) ){
-
+                    length = obj.length;
+                    for(; i < length; i++){
+                        if( callback.call( obj[i], i, obj[i] ) === false ){
+                            break;
+                        }
+                    }
+                }else{
+                    for( i in obj ){
+                        if( callback.call( obj[i], i, obj[i] ) === false ){
+                            break;
+                        }
+                    }
                 }
+
+                return obj;
+            },
+
+            //support: Android <= 4.0 only
+            trim : function( text ){
+                return text === null ? "" : ( text + "").replace( rtrim, "" );
+            },
+
+            // results is for internal usage only 仅在内部使用
+            makeArray : function( arr, results ){
+                var ret = results || [];
+
+                if( arr !== null ){
+                    if( isArrayLike( Object( arr ) ) ){
+                        jQuery.merge( ret, typeof arr === "string" ? [arr] : arr );
+                    }else{
+                        push.call( ret, arr );
+                    }
+                }
+                
+                return ret;
+            },
+
+            inArray : function( elem, arr, i ){
+                return arr == null ? -1 : indexOf.call( arr, elem, i );
+            },
+
+            // Support: Android <=4.0 only, PhantomJS 1 only
+	        // push.apply(_, arraylike) throws on ancient WebKit
+            merge : function( first, second ){
+                var len = +second.length,
+                    j = 0,
+                    i = first.length;
+                for( ; j < len; j++ ){
+                    first[i++] = second[j];
+                }
+
+                first.length = i;
+
+                return first;
             },
 
 
 
+            grep : function( elems, callback, invert ){
+                var callbackInverse,
+                    matches = [],
+                    i = 0,
+                    length = elems.length,
+                    callbackExpect = !invert;
+
+                // Go through the array, only saving the items 通过数组，只保存条目
+                // that pass the validator function 通过验证函数
+                for( ; i < length; i++ ){
+                    callbackExpect = !callback( elems[i], i );
+                    if( callbackExpect !== callbackExpect ){
+                        matches.push( elems[i] );
+                    }
+                }
+                return matches;
+            },
+
+            // arg is for internal usage only 仅内部使用
+            map : function( elems, callback, arg ){
+                var length, value,
+                    i = 0,
+                    ret = [];
+
+                //arg
+                if( isArrayLike( elems ) ){
+                    length = elems.length;
+                    for( ; i < length; i++ ){
+                        value = callback( elems[i], i, arg );
+
+                        if( value != null ){
+                            ret.push( value );
+                        }
+                    }
+                }else{
+                    // object
+                    for( i in elems ){
+                        value = callback( elems[i], i, arg );
+
+                        if( value != null ){
+                            ret.push( value );
+                        }
+                    }
+                }
+                
+                // Flatten any nested arrays 对任意嵌套数组进行扁平化
+                return concat.apply( [], ret );
+            },
+
+            
+
+            // A global GUID counter for objects    对象的全局GUID计数器
+            guid: 1,
+            // Bind a function to a context, optionally partially applying any 将函数绑定到上下文，可以部分地应用任何
+            // arguments.
+            proxy : function( fn, context ){
+                var tmp, args, proxy;
+                
+                if( typeof context === "string" ){
+                    tmp = fn[context];
+                    context = fn;
+                    fn = tmp;
+                }
+
+
+                // Quick check to determine if target is callable, in the spec 快速检查以确定目标是否可调用，在规范中
+                // this throws a TypeError, but we will just return undefined. 该抛出TypeError，但我们只会返回未定义。
+                if( !jQuery.isFunction( fn ) ){
+                    return undefined;
+                }
+
+                // Simulated bind
+                args = slice.call( arguments, 2 );
+                proxy = function(){
+                    return fn.apply( context || this, args.concat( slice.call( arguments )) );
+                };
+
+                //Set the guid of unique handler to the same of original handler, so it can be remove 局部计数，故可删除
+                proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+
+                return proxy;
+
+            },
+
+            now : Data.now,
+
+            // jQuery.support is not used in Core but other projects attach their jquery.support不用于其他项目的核心但重视他们
+            // properties to it so it needs to exist.  属性，所以它需要存在
+            support: support
+
         });
+         //jQuery 扩展工具end
 
         //判断是否是数组/类数组
         // Support: real iOS 8.2 only (not reproducible in simulator)
@@ -340,7 +484,7 @@
             return type === "array" || length === 0 || //数组、
                     typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 
-        }
+        };
 
 
 
