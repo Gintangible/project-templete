@@ -38,31 +38,18 @@
     "use strict";
 
     var arr = [];
-
     var document = window.document;
-
     var getProto = Object.getPrototypeOf;
-
     var slice = arr.slice;
-
     var concat = arr.concat;
-
     var push = arr.push;
-
     var indexOf = arr.indexOf;
-
     var class2type = {};
-
     var toString = class2type.toString;
-
     var hasOwn = class2type.hasOwnProperty;
-
     var fnToString = hasOwn.toString;
-
     var ObjectFunctionString = fnToString.call( Object );
-
     var support = {};
-
 
         function DOMEval( code, doc ) {
             doc = doc || document;
@@ -75,9 +62,6 @@
     //在 .eslintrc.json 中定义全局会造成全局危险
     //在其他情况是有问题的，对本模块来说，是安全的
 
-
-
-
     var version = '1.0.0',
         // jQuery对象不是通过 new jQuery 创建的，而是通过 new jQuery.fn.init 创建的
         //jQuery对象就是jQueryy.fn.init对象
@@ -89,7 +73,6 @@
         // Support: Android <=4.0 only
         // Make sure we trim BOM and NBSP
         rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-
         // Matches dashed string for camelizing ie
         rmsPrefix = /^-ms-/,
         rdashAlpha = /-([a-z])/g,
@@ -102,11 +85,8 @@
 
     //jQuery 数组方法
     jQuery.fn = jQuery.prototype = {
-
         jquery : version,
-
         constructor: jQuery,
-
         //jQuery对象默认长度为0
         length: 0,
 
@@ -212,7 +192,7 @@
                     copy = options[name];
 
                     if( target === copy ){// 防止自引用
-                        continue;s
+                        continue;
                     }
 
                     // 如果是深拷贝，且被拷贝的属性值本身是个对象
@@ -325,7 +305,7 @@
         },
 
         each : function ( obj, callback ) {
-            var lenght, i = 0;
+            var length, i = 0;
 
             if( isArrayLike( obj ) ){
                 length = obj.length;
@@ -520,7 +500,7 @@
                 select,
                 outermostContext,
                 sortInput,
-                hsaDuplicate,
+                hasDuplicate,
 
                 //本地变量
                 setDocument,
@@ -533,7 +513,7 @@
                 contains,
 
             	// Instance-specific data
-                expando = "sizzle" + 1 * new Date();
+                expando = "sizzle" + 1 * new Date(),
                 preferredDoc = window.document,
                 dirruns = 0, 
                 done = 0,
@@ -575,9 +555,37 @@
                 //RegExp
                 whitespace = "[\\x20\\t\\r\\n\\f]",
 
-                identifier = "(?:\\\\.|[\\w-]|[^\0-\\xa0])"
+                identifier = "(?:\\\\.|[\\w-]|[^\0-\\xa0])",
 
+                // Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
+                attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
+                    // Operator (capture 2)
+                    "*([*^$|!~]?=)" + whitespace +
+                    // "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
+                    "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
+                    "*\\]",
 
+                    pseudos = ":(" + identifier + ")(?:\\((" +
+                        // To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
+                        // 1. quoted (capture 3; capture 4 or capture 5)
+                        "('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
+                        // 2. simple (capture 6)
+                        "((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
+                        // 3. anything else (capture 2)
+                        ".*" +
+                        ")\\)|)",
+
+                    // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
+                    rwhitespace = new RegExp( whitespace + "+", "g" ),
+                    rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
+
+                    rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
+                    rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
+
+                    rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
+
+                    rpseudo = new RegExp( pseudos ),
+                    ridentifier = new RegExp( "^" + identifier + "$" );
 
 
 
