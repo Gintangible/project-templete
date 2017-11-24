@@ -1,23 +1,23 @@
-;( function ( global, factory ) {
-    
+; (function (global, factory) {
+
     "use strict"; //严格模式
 
     //支持cmd and amd
-    if( typeof module === "object" && typeof  module.exports === "object" ){
+    if (typeof module === "object" && typeof module.exports === "object") {
         module.exports = global.document ?
-            factory( global, true ) :
-            function ( w ) {
-                if( !w.document ){
+            factory(global, true) :
+            function (w) {
+                if (!w.document) {
                     throw new Error("jQuery requires a window with a document");
-                }else{
-                    return factory( w );
+                } else {
+                    return factory(w);
                 }
             };
-    }else{
-        factory( global );
+    } else {
+        factory(global);
     }
-    
-})( typeof window !== "undefined" ? window : this, function ( window, noGlobal ) {
+
+})(typeof window !== "undefined" ? window : this, function (window, noGlobal) {
 
     //jQuery的13大模块
     // 核心方法// 回调系统// 异步队列// 数据缓存// 队列操作// 选择器// 属性操作// 节点遍历// 文档处理// 样式操作// 属性操作// 事件体系// AJAX交互// 动画引擎
@@ -48,15 +48,15 @@
     var toString = class2type.toString;
     var hasOwn = class2type.hasOwnProperty;
     var fnToString = hasOwn.toString;
-    var ObjectFunctionString = fnToString.call( Object );
+    var ObjectFunctionString = fnToString.call(Object);
     var support = {};
 
-        function DOMEval( code, doc ) {
-            doc = doc || document;
-            var script = doc.createElement("script");
-            script.text = code;
-            doc.head.appendChild( script ).parentNode.removeChild( script );
-        }
+    function DOMEval(code, doc) {
+        doc = doc || document;
+        var script = doc.createElement("script");
+        script.text = code;
+        doc.head.appendChild(script).parentNode.removeChild(script);
+    }
 
     //全局符号
     //在 .eslintrc.json 中定义全局会造成全局危险
@@ -66,8 +66,8 @@
         // jQuery对象不是通过 new jQuery 创建的，而是通过 new jQuery.fn.init 创建的
         //jQuery对象就是jQueryy.fn.init对象
         //构造jQuery对象
-        jQuery = function ( selector, context ) {
-            return new jQuery.fn.init( selector, context );
+        jQuery = function (selector, context) {
+            return new jQuery.fn.init(selector, context);
         },
 
         // Support: Android <=4.0 only
@@ -78,38 +78,38 @@
         rdashAlpha = /-([a-z])/g,
 
         // Used by jQuery.camelCase as callback to replace()
-        fcamelCase = function( all, letter ) {
+        fcamelCase = function (all, letter) {
             return letter.toUpperCase();
         };
 
 
     //jQuery 数组方法
     jQuery.fn = jQuery.prototype = {
-        jquery : version,
+        jquery: version,
         constructor: jQuery,
         //jQuery对象默认长度为0
         length: 0,
 
         //将类数组转换为数组
-        toArray : function () {
-            return slice.call( this );
+        toArray: function () {
+            return slice.call(this);
         },
 
         //同上
-        get : function ( num ) {
+        get: function (num) {
 
-            if( num == null ){//undefined ==  null true
-                return slice.call( this );
+            if (num == null) {//undefined ==  null true
+                return slice.call(this);
             }
             //返回某一具体元素
-            return num < 0 ? this[ num + this.length ] : this[ num ];
+            return num < 0 ? this[num + this.length] : this[num];
         },
 
         //把数组中的元素，把它推到堆栈
         //（返回新的元素集）
-        pushStack : function ( elems ) {
+        pushStack: function (elems) {
             //建立新的匹配的元素
-            var ret = jQuery.merge( this.constructor(), elems );
+            var ret = jQuery.merge(this.constructor(), elems);
 
             ret.prevObject = this;
 
@@ -117,35 +117,35 @@
         },
 
         //对匹配集合中的每个元素执行回调。
-        each : function ( callback ) {
-            return jQuery.each( this, callback );
+        each: function (callback) {
+            return jQuery.each(this, callback);
         },
 
-        map : function () {
-            return this.pushStack( jQuery.map( this, function ( elem, i ) {
-                return callback.call( elem, i, elem );
-            } ) );
+        map: function () {
+            return this.pushStack(jQuery.map(this, function (elem, i) {
+                return callback.call(elem, i, elem);
+            }));
         },
 
-        slice : function () {
-            return this.pushStack( slice.apply( this, arguments ) )
+        slice: function () {
+            return this.pushStack(slice.apply(this, arguments))
         },
 
-        first : function () {
-            return this.eq( 0 );
+        first: function () {
+            return this.eq(0);
         },
 
-        last : function () {
-            return this.eq( -1 );
+        last: function () {
+            return this.eq(-1);
         },
 
-        eq : function ( i ) {
+        eq: function (i) {
             var len = this.length,
-                j = + i + ( i < 0 ? len : 0 );
-            return this.pushStack( j >= 0 && j < len ? [ this[j] ] : []  );
+                j = + i + (i < 0 ? len : 0);
+            return this.pushStack(j >= 0 && j < len ? [this[j]] : []);
         },
 
-        end : function () {
+        end: function () {
             return this.prevObject || this.constructor();
         },
 
@@ -159,55 +159,55 @@
     jQuery.extend = jQuery.fn.extend = function () {
         var options, name, src, copy, copyIsArray, clone,
             target = arguments[0] || {},// 常见用法 jQuery.extend( obj1, obj2 )，此时，target为arguments[0]
-            i= 1,
+            i = 1,
             length = arguments.length,//arguments对象的长度是由实参个数而不是形参个数决定的。
             deep = false;
 
         //处理深拷贝情况
-        if( typeof target === "boolean"){// 如果第一个参数为true，即 jQuery.extend( true, obj1, obj2 ); 的情况
+        if (typeof target === "boolean") {// 如果第一个参数为true，即 jQuery.extend( true, obj1, obj2 ); 的情况
             deep = target;// 此时target是true
             target = arguments[i] || {};//target 改为 obj1， i = 1
             i++; //i = 2
         }
 
         //target为字符串时（可能是深层copy）
-        if( typeof target !== "object" && !jQuery.isFunction( target ) ){ // 处理奇怪的情况，比如 jQuery.extend( 'hello' , {nick: 'casper})
-            target ={};
+        if (typeof target !== "object" && !jQuery.isFunction(target)) { // 处理奇怪的情况，比如 jQuery.extend( 'hello' , {nick: 'casper})
+            target = {};
         }
 
         //仅有一个参数时，扩展jQuery本身
-        if( i === length ){// 处理这种情况 jQuery.extend(obj)，或 jQuery.fn.extend( obj )
+        if (i === length) {// 处理这种情况 jQuery.extend(obj)，或 jQuery.fn.extend( obj )
             target = this; // jQuery.extend时，this指的是jQuery；jQuery.fn.extend时，this指的是jQuery.fn
             i--;
         }
 
-        for( ; i < length; i++ ){
+        for (; i < length; i++) {
 
             //只处理非空/未定义的值
-            if( ( options = arguments[i]) != null ){ // 比如 jQuery.extend( obj1, obj2, obj3, ojb4 )，options则为 obj2、obj3...
+            if ((options = arguments[i]) != null) { // 比如 jQuery.extend( obj1, obj2, obj3, ojb4 )，options则为 obj2、obj3...
 
                 //扩展基础对象
-                for( name in options ){
+                for (name in options) {
                     src = target[name];
                     copy = options[name];
 
-                    if( target === copy ){// 防止自引用
+                    if (target === copy) {// 防止自引用
                         continue;
                     }
 
                     // 如果是深拷贝，且被拷贝的属性值本身是个对象
-                    if( deep && copy && ( jQuery.isPlainObject( copy ) || ( copyIsArray = Array.isArray( copy ) ) ) ){
-                        if( copyIsArray ){// 被拷贝的属性值是个数组
+                    if (deep && copy && (jQuery.isPlainObject(copy) || (copyIsArray = Array.isArray(copy)))) {
+                        if (copyIsArray) {// 被拷贝的属性值是个数组
                             // 将copyIsArray重新设置为false，为下次遍历做准备。
                             copyIsArray = false;
-                            clone = src && Array.isArray( src ) ? src : [];
+                            clone = src && Array.isArray(src) ? src : [];
                         } else { //被拷贝的属性值是个plainObject，比如{ nick: 'casper' }
-                            clone = src && jQuery.isPlainObject( src ) ? src : {};
+                            clone = src && jQuery.isPlainObject(src) ? src : {};
                         }
 
-                        target[name] = jQuery.extend( deep, clone, copy );// 递归~
+                        target[name] = jQuery.extend(deep, clone, copy);// 递归~
 
-                    } else if ( copy !== undefined ){// 浅拷贝，则直接把copy（第i个被扩展对象中被遍历的那个键的值）
+                    } else if (copy !== undefined) {// 浅拷贝，则直接把copy（第i个被扩展对象中被遍历的那个键的值）
                         target[name] = copy;
                     }
 
@@ -227,96 +227,96 @@
     jQuery.extend({
 
         //页面上的jQuery 副本都是唯一的 Unique for each copy of jQuery on the page
-        expando : "jQuery" + ( version + Math.random() ).replace( /\D/g, "  "), //\D匹配一个非字数字符
+        expando: "jQuery" + (version + Math.random()).replace(/\D/g, "  "), //\D匹配一个非字数字符
 
         // 假设jqery ready 已加载完成
-        isReady : true,
+        isReady: true,
 
-        error : function( msg ){
-            throw new Error( msg );
+        error: function (msg) {
+            throw new Error(msg);
         },
 
-        noop : function () {},
+        noop: function () { },
 
-        isFunction : function ( obj ) {
-            return jQuery.type( obj ) === "function";
+        isFunction: function (obj) {
+            return jQuery.type(obj) === "function";
         },
 
-        isWindow : function ( obj ) {
+        isWindow: function (obj) {
             return obj != null && obj === obj.window;
         },
-        
-        isNumeric : function ( obj ) {//number + string number
-            var type = jQuery.type( obj );
-            return ( type === "number" || type === "string" ) &&
-                    !isNaN( obj - parseFloat( obj ) );
+
+        isNumeric: function (obj) {//number + string number
+            var type = jQuery.type(obj);
+            return (type === "number" || type === "string") &&
+                !isNaN(obj - parseFloat(obj));
         },
 
         //基本对象检测
-        isPlainObject : function ( obj ) {
+        isPlainObject: function (obj) {
             var proto, Ctor;
             // 使用 negatives 检测
             // 使用原始对象方法而不是jquery.type
-            if( !obj || toString.call( obj ) !== "[object Object]"){
+            if (!obj || toString.call(obj) !== "[object Object]") {
                 return false;
             }
-            proto = getProto( obj );
+            proto = getProto(obj);
 
             //没有原型的对象（例如，对象“创建（空）”）是普通的。??
-            if( !proto ){
+            if (!proto) {
                 return true;
             }
 
             //具有原型的对象是基本对象，它们是由全局对象函数构造的。
-            Ctor = hasOwn.call( proto, "constructor" ) && proto.constructor;
-            return typeof Ctor === "function" && fnToString.call( Ctor ) === ObjectFunctionString;
+            Ctor = hasOwn.call(proto, "constructor") && proto.constructor;
+            return typeof Ctor === "function" && fnToString.call(Ctor) === ObjectFunctionString;
         },
 
-        isEmptyObject: function ( obj ) {
+        isEmptyObject: function (obj) {
             var name;
-            for( name in obj ){
+            for (name in obj) {
                 return false;
             }
             return true;
         },
 
-        type : function ( obj ) {
-            if( obj == null ){
+        type: function (obj) {
+            if (obj == null) {
                 return obj + "";//返回成字符串undefined
             }
 
             // Support: Android <=2.3 only (functionish RegExp)
             //class2type[ toString.call( obj ) ] ??为啥不直接使用 typeof
             return typeof obj === "object" || typeof obj === "function" ?
-                    class2type[ toString.call( obj ) ] || "object" :
-                    typeof obj;
+                class2type[toString.call(obj)] || "object" :
+                typeof obj;
         },
 
         //在全局上下文中执行脚本，
-        globalEval : function ( code ) {
-            DOMEval( code );
+        globalEval: function (code) {
+            DOMEval(code);
         },
 
         //转换为camelCase;供 css 和数据模块使用
         // Support: IE <=9 - 11, Edge 12 - 13  ms->Ms 
         // Microsoft forgot to hump their vendor prefix (#9572)
-        camelcase : function ( string ) {
-            return string.replace( rmsPrefix, "ms-").replace( rdashAlpha, fcamelCase );
+        camelcase: function (string) {
+            return string.replace(rmsPrefix, "ms-").replace(rdashAlpha, fcamelCase);
         },
 
-        each : function ( obj, callback ) {
+        each: function (obj, callback) {
             var length, i = 0;
 
-            if( isArrayLike( obj ) ){
+            if (isArrayLike(obj)) {
                 length = obj.length;
-                for(; i < length; i++){
-                    if( callback.call( obj[i], i, obj[i] ) === false ){
+                for (; i < length; i++) {
+                    if (callback.call(obj[i], i, obj[i]) === false) {
                         break;
                     }
                 }
-            }else{
-                for( i in obj ){
-                    if( callback.call( obj[i], i, obj[i] ) === false ){
+            } else {
+                for (i in obj) {
+                    if (callback.call(obj[i], i, obj[i]) === false) {
                         break;
                     }
                 }
@@ -326,36 +326,36 @@
         },
 
         //support: Android <= 4.0 only
-        trim : function( text ){
-            return text === null ? "" : ( text + "").replace( rtrim, "" );
+        trim: function (text) {
+            return text === null ? "" : (text + "").replace(rtrim, "");
         },
 
         // results is for internal usage only 仅在内部使用
-        makeArray : function( arr, results ){
+        makeArray: function (arr, results) {
             var ret = results || [];
 
-            if( arr !== null ){
-                if( isArrayLike( Object( arr ) ) ){
-                    jQuery.merge( ret, typeof arr === "string" ? [arr] : arr );
-                }else{
-                    push.call( ret, arr );
+            if (arr !== null) {
+                if (isArrayLike(Object(arr))) {
+                    jQuery.merge(ret, typeof arr === "string" ? [arr] : arr);
+                } else {
+                    push.call(ret, arr);
                 }
             }
-            
+
             return ret;
         },
 
-        inArray : function( elem, arr, i ){
-            return arr == null ? -1 : indexOf.call( arr, elem, i );
+        inArray: function (elem, arr, i) {
+            return arr == null ? -1 : indexOf.call(arr, elem, i);
         },
 
         // Support: Android <=4.0 only, PhantomJS 1 only
         // push.apply(_, arraylike) throws on ancient WebKit
-        merge : function( first, second ){
+        merge: function (first, second) {
             var len = +second.length,
                 j = 0,
                 i = first.length;
-            for( ; j < len; j++ ){
+            for (; j < len; j++) {
                 first[i++] = second[j];
             }
 
@@ -366,7 +366,7 @@
 
 
 
-        grep : function( elems, callback, invert ){
+        grep: function (elems, callback, invert) {
             var callbackInverse,
                 matches = [],
                 i = 0,
@@ -375,56 +375,56 @@
 
             // Go through the array, only saving the items 通过数组，只保存条目
             // that pass the validator function 通过验证函数
-            for( ; i < length; i++ ){
-                callbackExpect = !callback( elems[i], i );
-                if( callbackExpect !== callbackExpect ){
-                    matches.push( elems[i] );
+            for (; i < length; i++) {
+                callbackExpect = !callback(elems[i], i);
+                if (callbackExpect !== callbackExpect) {
+                    matches.push(elems[i]);
                 }
             }
             return matches;
         },
 
         // arg is for internal usage only 仅内部使用
-        map : function( elems, callback, arg ){
+        map: function (elems, callback, arg) {
             var length, value,
                 i = 0,
                 ret = [];
 
             //arg
-            if( isArrayLike( elems ) ){
+            if (isArrayLike(elems)) {
                 length = elems.length;
-                for( ; i < length; i++ ){
-                    value = callback( elems[i], i, arg );
+                for (; i < length; i++) {
+                    value = callback(elems[i], i, arg);
 
-                    if( value != null ){
-                        ret.push( value );
+                    if (value != null) {
+                        ret.push(value);
                     }
                 }
-            }else{
+            } else {
                 // object
-                for( i in elems ){
-                    value = callback( elems[i], i, arg );
+                for (i in elems) {
+                    value = callback(elems[i], i, arg);
 
-                    if( value != null ){
-                        ret.push( value );
+                    if (value != null) {
+                        ret.push(value);
                     }
                 }
             }
-            
+
             // Flatten any nested arrays 对任意嵌套数组进行扁平化
-            return concat.apply( [], ret );
+            return concat.apply([], ret);
         },
 
-        
+
 
         // A global GUID counter for objects    对象的全局GUID计数器
         guid: 1,
         // Bind a function to a context, optionally partially applying any 将函数绑定到上下文，可以部分地应用任何
         // arguments.
-        proxy : function( fn, context ){
+        proxy: function (fn, context) {
             var tmp, args, proxy;
-            
-            if( typeof context === "string" ){
+
+            if (typeof context === "string") {
                 tmp = fn[context];
                 context = fn;
                 fn = tmp;
@@ -433,14 +433,14 @@
 
             // Quick check to determine if target is callable, in the spec 快速检查以确定目标是否可调用，在规范中
             // this throws a TypeError, but we will just return undefined. 该抛出TypeError，但我们只会返回未定义。
-            if( !jQuery.isFunction( fn ) ){
+            if (!jQuery.isFunction(fn)) {
                 return undefined;
             }
 
             // Simulated bind
-            args = slice.call( arguments, 2 );
-            proxy = function(){
-                return fn.apply( context || this, args.concat( slice.call( arguments )) );
+            args = slice.call(arguments, 2);
+            proxy = function () {
+                return fn.apply(context || this, args.concat(slice.call(arguments)));
             };
 
             //Set the guid of unique handler to the same of original handler, so it can be remove 局部计数，故可删除
@@ -450,24 +450,24 @@
 
         },
 
-        now : Date.now,
+        now: Date.now,
 
         // jQuery.support is not used in Core but other projects attach their jquery.support不用于其他项目的核心但重视他们
         // properties to it so it needs to exist.  属性，所以它需要存在
         support: support
 
     });
-         //jQuery 扩展工具end
+    //jQuery 扩展工具end
 
-        //?? 作用不明
-        if( typeof Symbol === "function" ){
-            jQuery.fn[ Symbol.iterator ] = arr[ Symbol.iterator ];
-        }
+    //?? 作用不明
+    if (typeof Symbol === "function") {
+        jQuery.fn[Symbol.iterator] = arr[Symbol.iterator];
+    }
 
-        // 扩展class2type
-        jQuery.each("Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "), function( i, name ){
-            class2type["[Object " + name + "]"] = name.toLowerCase();
-        });
+    // 扩展class2type
+    jQuery.each("Boolean Number String Function Array Date RegExp Object Error Symbol".split(" "), function (i, name) {
+        class2type["[Object " + name + "]"] = name.toLowerCase();
+    });
 
 
     //判断是否是数组/类数组
@@ -475,126 +475,302 @@
     // `in` check used to prevent JIT error (gh-2145)
     // hasOwn isn't used here due to false negatives
     // regarding Nodelist length in IE
-    function isArrayLike( obj ) {
+    function isArrayLike(obj) {
         var length = !!obj && "length" in obj && obj.length,
-            type = jQuery.type( obj );
+            type = jQuery.type(obj);
 
-        if( type === "function" || jQuery.isWindow( obj ) ){
+        if (type === "function" || jQuery.isWindow(obj)) {
             return false;
         }
         return type === "array" || length === 0 || //数组、
-                typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+            typeof length === "number" && length > 0 && (length - 1) in obj;
     };
 
 
     //sizzle: 复杂选择器
     //可取出
-    var Sizzle = (function( window ){
-            var i, 
-                support,
-                Expr,
-                getText,
-                isXML,
-                tokenize,
-                compile,
-                select,
-                outermostContext,
-                sortInput,
-                hasDuplicate,
+    var Sizzle = (function (window) {
+        var i,
+            support,
+            Expr,
+            getText,
+            isXML,
+            tokenize,
+            compile,
+            select,
+            outermostContext,
+            sortInput,
+            hasDuplicate,
 
-                //本地变量
-                setDocument,
-                documend,
-                docElem,
-                documentIsHTML,
-                rbuggyQSA,
-                rbuggyMatches,
-                matches,
-                contains,
+            //本地变量
+            setDocument,
+            documend,
+            docElem,
+            documentIsHTML,
+            rbuggyQSA,
+            rbuggyMatches,
+            matches,
+            contains,
 
-            	// Instance-specific data
-                expando = "sizzle" + 1 * new Date(),
-                preferredDoc = window.document,
-                dirruns = 0, 
-                done = 0,
-                classCache = createCache(),
-                tokenCache = createCache(),
-                compilerCache = createCache(),
-                sortOrder = function( a, b ){
-                    if( a === b ){
-                        hasDuplicate = true;
+            // Instance-specific data
+            expando = "sizzle" + 1 * new Date(),
+            preferredDoc = window.document,
+            dirruns = 0,
+            done = 0,
+            classCache = createCache(),
+            tokenCache = createCache(),
+            compilerCache = createCache(),
+            sortOrder = function (a, b) {
+                if (a === b) {
+                    hasDuplicate = true;
+                }
+                return 0;
+            },
+
+
+            // Instance methods
+            hasOwn = ({}).hasOwnProperty,
+            arr = [],
+            pop = arr.pop,
+            push_native = arr.push,
+            push = arr.push,
+            slice = arr.slice,
+
+            //使用一个精简的 idnexOf 比其原生速度快
+            indexOf = function (list, elem) {
+                var i = 0,
+                    len = list.length;
+
+                for (; i < len; i++) {
+                    if (list[i] === elem) {
+                        return i;
                     }
-                    return 0;
+                }
+                return -1;
+            },
+
+
+            booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
+
+            //RegExp
+            whitespace = "[\\x20\\t\\r\\n\\f]",
+
+            identifier = "(?:\\\\.|[\\w-]|[^\0-\\xa0])",
+
+            // Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
+            attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
+                // Operator (capture 2)
+                "*([*^$|!~]?=)" + whitespace +
+                // "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
+                "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
+                "*\\]",
+
+            pseudos = ":(" + identifier + ")(?:\\((" +
+                // To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
+                // 1. quoted (capture 3; capture 4 or capture 5)
+                "('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
+                // 2. simple (capture 6)
+                "((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
+                // 3. anything else (capture 2)
+                ".*" +
+                ")\\)|)",
+
+            // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
+            rwhitespace = new RegExp(whitespace + "+", "g"),
+            rtrim = new RegExp("^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g"),
+
+            rcomma = new RegExp("^" + whitespace + "*," + whitespace + "*"),
+            rcombinators = new RegExp("^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*"),
+
+            rattributeQuotes = new RegExp("=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g"),
+
+            rpseudo = new RegExp(pseudos),
+            ridentifier = new RegExp("^" + identifier + "$"),
+
+            matchExpr = {
+                "ID": new RegExp("^#(" + identifier + ")"),
+                "CLASS": new RegExp("^\\.(" + identifier + ")"),
+                "TAG": new RegExp("^(" + identifier + "|[*])"),
+                "ATTR": new RegExp("^" + attributes),
+                "PSEUDO": new RegExp("^" + pseudos),
+                "CHILD": new RegExp("^:(only|first|last|nth|nth-last)-(child|of-type)(?:\\(" + whitespace +
+                    "*(even|odd|(([+-]|)(\\d*)n|)" + whitespace + "*(?:([+-]|)" + whitespace +
+                    "*(\\d+)|))" + whitespace + "*\\)|)", "i"),
+                "bool": new RegExp("^(?:" + booleans + ")$", "i"),
+                // For use in libraries implementing .is()
+                // We use this for POS matching in `select`
+                "needsContext": new RegExp("^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
+                    whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i")
+            },
+
+            rinputs = /^(?:input|select|textarea|button)$/i,
+            rheader = /^h\d$/i,
+
+            rnative = /^[^{]+\{\s*\[native \w/,
+
+            // Easily-parseable/retrievable ID or TAG or CLASS selectors
+            rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
+
+            rsibling = /[+~]/,
+
+            // CSS escapes
+            // http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
+            runescape = new RegExp("\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig"),
+            funescape = function (_, escaped, escapedWhitespace) {
+                var high = "0x" + escaped - 0x10000;
+                // NaN means non-codepoint
+                // Support: Firefox<24
+                // Workaround erroneous numeric interpretation of +"0x"
+                return high !== high || escapedWhitespace ?
+                    escaped :
+                    high < 0 ?
+                        // BMP codepoint
+                        String.fromCharCode(high + 0x10000) :
+                        // Supplemental Plane codepoint (surrogate pair)
+                        String.fromCharCode(high >> 10 | 0xD800, high & 0x3FF | 0xDC00);
+            },
+
+            // CSS string/identifier serialization
+            // https://drafts.csswg.org/cssom/#common-serializing-idioms
+            rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\0-\x1f\x7f-\uFFFF\w-]/g,
+            fcssescape = function (ch, asCodePoint) {
+                if (asCodePoint) {
+
+                    // U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
+                    if (ch === "\0") {
+                        return "\uFFFD";
+                    }
+
+                    // Control characters and (dependent upon position) numbers get escaped as code points
+                    return ch.slice(0, -1) + "\\" + ch.charCodeAt(ch.length - 1).toString(16) + " ";
+                }
+
+                // Other potentially-special ASCII characters get backslash-escaped
+                return "\\" + ch;
+            },
+
+            //for iframe
+            //setDocument  
+            //删除function 导致 "拒绝权限"
+            //error in ie
+            unloadHandler = function(){
+                setDocument();
+            },
+
+            disableAncestor = addCombinator(
+                function( elem ){
+                    return elem.disabled === true && ( "from" in elem || "label" in elem );
                 },
+                { dir : "parentNode", next: "legend" }
+            );
 
+        
+         
+	    // Optimize for push.apply( _, NodeList ) 优化
+        try{
+            push.apply(
+                ( arr= slice.call( preferredDoc.childNodes) ),
+                preferredDoc.childNodes
+            );
+            // Support: Android<4.0
+	        // Detect silently failing push.apply
+            arr[ preferredDoc.childNodes.length ].nodeType;
+        } catch( e ){
+            push = { apply: arr.length ? 
 
-                // Instance methods
-                hasOwn = ({}).hasOwnProperty,
-                arr = [],
-                pop = arr.pop,
-                push_native = arr.push,
-                push = arr.push,
-                slice = arr.slice,
+		            // Leverage slice if possible
+                    function( target, els ){
+                        push_native.apply( target, slice.call( els ) );
+                    } : 
+                    // Support: IE<9
+                    // Otherwise append directly
+                    function(){
+                        var j = target.length,
+                            i = 0;
 
-                //使用一个精简的 idnexOf 比其原生速度快
-                indexOf = function( list, elem ){
-                    var i = 0,
-                        len = list.length;
-                
-                    for( ; i < len; i++ ){
-                        if( list[i] === elem ){
-                            return i;
+                        // Can't trust NodeList.length
+                        while( ( target[j++] = els[i++] ) ){}
+                        target.length = j -1;
+                    }
+
+            }
+        }
+
+        function Sizzle( selector, context, results, seed ){
+            var m, i, elem, nid, match, groups, newSelector,
+                newContext = context && context.ownerDocument,
+                // nodeType defaults to 9, since context defaults to document
+                nodeType = context ? context.nodeType : 9;
+
+            results = results || [];
+            
+            // Return early from calls with invalid selector or context 从具有无效选择器或上下文的调用提前返回
+            if( typeof selector !== "string" || !selector || nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ){
+                return results;
+            } 
+
+            // Try to shortcut find operations (as opposed to filters) in HTML documents
+            if( !seed ){
+                if( ( context ? context.ownerDocument || context : preferredDoc ) !== document ){
+                    setDocument( context );
+                }
+                context = context || document;
+
+                if( documentIsHTML ){
+                    // If the selector is sufficiently simple, try using a "get*By*" DOM method 如果选择器足够简单，尝试使用 "get*By*" DOM方法
+                    // (excepting DocumentFragment context, where the methods don't exist) （除documentfragment语境，方法不存在）
+                    if( nodeType !== 11 && (match = rquickExpr.exec( selector) ) ){
+                        //ID
+                        if( (m = match[1]) ){
+                            
+                            //document context
+                            if( nodeType === 9 ){
+                                if( (elem = context.getElementById( m ) ) ){
+                                    if( elem.id === m ){
+                                        results.push( elem );
+                                        return results;
+                                    }
+                                }else{
+                                    return results;
+                                }
+                                
+					        // Element context
+                            }else{
+                                if( newContext && ( elem = newContext.getElementById( m ) ) && 
+                                    contains( context, elem ) && 
+                                    elem.id === m ){
+                                        results.push( elem );
+                                        return results;
+                                    }
+                            }
+
+                        //Type seletor
+                        } else if( match[2] ){
+                            push.apply( results, context.getElementsByTagName( selector) );
+                            return results;
+
+                        //class 
+                        }else if( (m = match[3]) && support.getElementsByClassName && context.getElementsByClassName ){
+                            push.apply( results, context.getElementsByClassName( m ) );
+                            return results;
                         }
+
+
                     }
-                    return -1;
-                },
 
-                
-                booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
+                }
 
-                //RegExp
-                whitespace = "[\\x20\\t\\r\\n\\f]",
-
-                identifier = "(?:\\\\.|[\\w-]|[^\0-\\xa0])",
-
-                // Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
-                attributes = "\\[" + whitespace + "*(" + identifier + ")(?:" + whitespace +
-                    // Operator (capture 2)
-                    "*([*^$|!~]?=)" + whitespace +
-                    // "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
-                    "*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
-                    "*\\]",
-
-                    pseudos = ":(" + identifier + ")(?:\\((" +
-                        // To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
-                        // 1. quoted (capture 3; capture 4 or capture 5)
-                        "('((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\")|" +
-                        // 2. simple (capture 6)
-                        "((?:\\\\.|[^\\\\()[\\]]|" + attributes + ")*)|" +
-                        // 3. anything else (capture 2)
-                        ".*" +
-                        ")\\)|)",
-
-                    // Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
-                    rwhitespace = new RegExp( whitespace + "+", "g" ),
-                    rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
-
-                    rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
-                    rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
-
-                    rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
-
-                    rpseudo = new RegExp( pseudos ),
-                    ridentifier = new RegExp( "^" + identifier + "$" );
+            }
 
 
-
+            return select( selector.replace( rtrim, "$1" ), context, results, seed );
+        };
 
 
 
 
         return Sizzle;
-    })( window );
+    })(window);
     // sizzle end 
 
 
