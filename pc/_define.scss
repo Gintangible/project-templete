@@ -96,47 +96,9 @@
 
 %bdn{border:0 none;}
 
-%w1200{width:1200px;}
-%w1000{width:1000px;}
-
-%rgba6{
-  background:rgba(0,0,0,.6);
-  filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');
-}
-
-// @include background-opacity(#000, 0.5);
-// @mixin background-opacity($hexColor, $opacity){
-//     $rgba : rgba($hexColor, $opacity);
-//     *background: url(about:blank);
-//     background: $rgba;
-//     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($rgba)}',endColorstr='#{ie-hex-str($rgba)}') \9;
-//     @at-root(without:all){
-//         :root &{
-//             filter: '' \9;
-//         }
-//     }
-// }
-
-
 //内部边框
-%borderbox {
--webkit-box-sizing: border-box;
-   -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-        box-sizing: border-box;
-}
+%borderbox { box-sizing: border-box;}
 
-%trans{
--webkit-transition: all .2s linear;
-   -moz-transition: all .2s linear;
-    -ms-transition: all .2s linear;
-        transition: all .2s linear;
-}
 
 //禁用长按选中文本功能
-%usn{
--webkit-user-select: none;
-   -moz-user-select: none;
-    -ms-user-select: none;
-        user-select: none;
-}
+%usn{user-select: none;}

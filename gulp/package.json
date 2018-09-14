@@ -1,0 +1,35 @@
+{
+  "name": "sj-pc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "set GULP_ENV=env && gulp",
+    "build": "set GULP_ENV=prod && gulp build",
+    "zip": "npm run build && gulp zip",
+    "clean": "gulp clean",
+    "cleanModule": "gulp cleanModule"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^5.0.0",
+    "gulp-babel": "^7.0.1",
+    "gulp-clean-css": "^3.9.4",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-jshint": "^2.1.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^4.0.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-zip": "^4.1.0",
+    "jshint": "^2.9.5",
+    "moment": "^2.22.2",
+    "run-sequence": "^2.2.1"
+  }
+}

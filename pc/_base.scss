@@ -1,0 +1,166 @@
+@mixin singleHeight($height) {
+    height: $height;
+    line-height: $height;
+}
+
+@mixin mulEllipsis($lineNum) {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $lineNum;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// @include bgop(#000, 0.5);
+@mixin bgop($hexColor, $opacity) {
+    $rgba: rgba($hexColor, $opacity);
+    *background: url(about:blank);
+    background: $rgba;
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($rgba)}', endColorstr='#{ie-hex-str($rgba)}') \9;
+
+    @at-root(without: all) {
+        :root & {
+            filter: ''\9;
+        }
+    }
+}
+
+
+@mixin triAngle($size:20px, $borderColor: #000, $direction: top, $inner: false, $transparent: true) {
+    width: 0;
+    height: 0;
+
+    @if ($direction==up) or ($direction==right) or ($direction==down) or ($direction==left) {
+        //设置边框 
+        border: ($size / 2) solid transparent; //三角朝上 
+
+        @if $direction==up {}
+    }
+}
+
+@mixin triangle ($size:30px, $color:#000, $bgColor:#111, $direction:up, $inner:false, $transparent:false) {
+    position: absolute;
+
+    @if ($direction==up) or ($direction==right) or ($direction==down) or ($direction==left) {
+        //设置边框 
+        border: ($size / 2) solid transparent;
+
+        //三角朝上 
+        @if $direction==up {
+
+            //三角内嵌 $inner=true 
+            @if $inner {
+                border-color: $bgColor transparent transparent transparent;
+                border-bottom-width: 0;
+                top: 0;
+            }
+
+            @else {
+                //三角为内嵌$inner=false 
+                border-color: transparent transparent $color transparent;
+                border-top-width: 0;
+                bottom: 100%;
+            }
+
+            //三角为透明 $transparent = true
+            @if $transparent {
+                border-color: transparent $color $color $color;
+                border-top-width: $size / 2;
+                border-bottom-width: 0;
+            }
+        }
+
+        //三角朝右
+        @else if $direction==right {
+            @if $inner {
+                border-color: transparent $bgColor transparent transparent;
+                border-left-width: 0;
+                right: 0;
+            }
+
+            @else {
+                border-color: transparent transparent transparent $color;
+                border-right-width: 0;
+                left: 100%;
+            }
+
+            @if $transparent {
+                border-color: $color transparent $color $color;
+                border-right-width: $size / 2;
+                border-left-width: 0;
+            }
+        }
+
+        //三角朝下
+        @else if $direction==down {
+            @if $inner {
+                border-color: transparent transparent $bgColor transparent;
+                border-top-width: 0;
+                bottom: 0;
+            }
+
+            @else {
+                border-color: $color transparent transparent transparent;
+                border-bottom-width: 0;
+                top: 100%;
+            }
+
+            @if $transparent {
+                border-color: $color $color transparent $color;
+                border-bottom-width: $size / 2;
+                border-top-width: 0;
+            }
+        }
+
+        //三角朝右 
+        @else if $direction==left {
+            @if $inner {
+                border-color: transparent transparent transparent $bgColor;
+                border-right-width: 0;
+                left: 0;
+            }
+
+            @else {
+                border-color: transparent $color transparent transparent;
+                border-left-width: 0;
+                right: 100%;
+            }
+
+            @if $transparent {
+                border-color: $color $color $color transparent;
+                border-left-width: $size / 2;
+                border-right-width: 0;
+            }
+        }
+    }
+
+    //当三角为左上、右上直角三角形时 
+    @else if ($direction==up-right) or ($direction==up-left) {
+        border-top: $size solid $color; //顶边边框样式 top: 100%; //当三角为右上直角三角形时，设置左边边框为透明 
+
+        @if $direction==up-right {
+            border-left: $size solid transparent;
+            left: 0; //当三角为左上直角三角形时，设置右边边框为透明 } 
+
+            @else if $direction==up-left {
+                border-right: $size solid transparent;
+                right: 0;
+            }
+        }
+
+        //当三角为右下、左下直角三角形时
+        @else if ($direction==down-right) or ($direction==down-left) {
+            border-bottom: $size solid $color; //底边边框样式 bottom: 100%; //当三角为右下直角三角形时，设置左边边框为透明 
+
+            @if $direction==down-right {
+                border-left: $size solid transparent;
+                left: 0;
+            }
+
+            @else if $direction==down-left {
+                border-right: $size solid transparent;
+                right: 0;
+            }
+        }
+    }
+}

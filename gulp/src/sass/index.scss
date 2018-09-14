@@ -1,0 +1,21 @@
+%tac{
+    text-align: center;
+}
+
+.test{
+    width: 100px;
+    line-height: 100px;
+    @extend %tac;
+    font-size: 20px;
+    background: #ccc;
+}
+
+.append{
+    width: 200px;
+    line-height: 100px;
+    @extend %tac;
+    font-size: 20px;
+    background: #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+}
