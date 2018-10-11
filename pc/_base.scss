@@ -11,20 +11,19 @@
     overflow: hidden;
 }
 
-// @include bgop(#000, 0.5);
-@mixin bgop($hexColor, $opacity) {
-    $rgba: rgba($hexColor, $opacity);
-    *background: url(about:blank);
-    background: $rgba;
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($rgba)}', endColorstr='#{ie-hex-str($rgba)}') \9;
+// @include bgop(#000, 0.5); for ie8-
+// @mixin bgop($hexColor, $opacity) {
+//     $rgba: rgba($hexColor, $opacity);
+//     *background: url(about:blank);
+//     background: $rgba;
+//     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($rgba)}', endColorstr='#{ie-hex-str($rgba)}') \9;
 
-    @at-root(without: all) {
-        :root & {
-            filter: ''\9;
-        }
-    }
-}
-
+//     @at-root(without: all) {
+//         :root & {
+//             filter: ''\9;
+//         }
+//     }
+// }
 
 @mixin triangle ($size:12px, $color:#000, $direction:up, $inner:false) {
     content: '';
