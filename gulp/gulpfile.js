@@ -1,8 +1,10 @@
 const gulp = require('gulp');
 const runSequence = require('run-sequence'); //run-sequence  逐步执行任务
 const del = require('del');
+const fs = require('fs');
 const moment = require('moment');
 const plugins = require('gulp-load-plugins')(); //for gulp
+const spritesmith = require('gulp.spritesmith');
 /* plugins :{
  *   sass:                 ： 
  *   gulp-imagemin         ：  压缩img
@@ -39,6 +41,10 @@ const paths = {
     js: {
         src: src + 'js/*.js',
         dist: dist + 'js/'
+    },
+    minImg: {
+        src: 'images/',
+        css: 'css/'
     }
 };
 
@@ -57,7 +63,47 @@ for (let pro in taskSrc) {
     })
 }
 
+// 图片雪碧图 + css
+function getFolders(dir) { //获取文件目录
+    return fs.readdirSync(dir)
+        .filter(function (file) {
+            return fs.statSync(path.join(dir, file)).isDirectory();
+        });
+}
 
+
+const imageSpirt = getFolders(paths.minImg.src);
+imageSpirt.length && imageSpirt.forEach(
+    icon => {
+        console.log(icon);
+        gulp.task(icon, function () {
+            gulp.src(paths.minImg.src + icon + '/*.png')
+                .pipe(spritesmith({
+                    imgName: paths.minImg.src + icon + '.png', //保存合并后的名称
+                    cssName: paths.minImg.css + icon + '.css', //保存合并后css样式的地址
+                    padding: 10, //合并时两个图片的间距
+                    algorithm: 'binary-tree', //注释1
+                    //cssTemplate:'css/handlebarsStr.css'    //注释2
+                    cssTemplate: function (data) { //如果是函数的话，这可以这样写
+                        var arr = [];
+                        data.sprites.forEach(function (sprite) {
+                            arr.push("." + icon + "-" + sprite.name +
+                                "{" +
+                                "background-image: url('" + sprite.escaped_image + "');" +
+                                "background-repeat: no-repeat;" +
+                                "background-position: " + sprite.px.offset_x + " " + sprite.px.offset_y + ";" +
+                                "background-size: " + sprite.px.width + " " + sprite.px.height + ";" +
+                                "width: " + sprite.px.width + ";" +
+                                "height: " + sprite.px.height + ";" +
+                                "}\n");
+                        });
+                        return arr.join("");
+                    }
+                }))
+                .pipe(gulp.dest(dist)); //输出目录
+        });
+    }
+);
 
 gulp.task('html', () => {
     return gulp.src(paths.html.src)
@@ -140,6 +186,8 @@ gulp.task('watch', ['server'], function() {
 
 gulp.task('default', () => {
     runSequence(['sass', 'html', 'image', 'temp', 'js'], 'watch');
+    
+    runSequence([...imageSpirt])
 });
 
 gulp.task('clean', callback => {
