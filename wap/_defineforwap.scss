@@ -38,7 +38,6 @@ $browser-default-font-size:40;//html根字号20px & 设计图640px
 	clear:both;
 }
 
-
 %f0{font-size:0;line-height:0;}
 %fnone{line-height:9999px;@extend %oh;}
 %txtnone{text-indent:-999em;@extend %oh;}
@@ -71,7 +70,6 @@ $browser-default-font-size:40;//html根字号20px & 设计图640px
 %nowrap{white-space:nowrap;text-overflow:ellipsis;overflow:hidden;}
 %breakall{word-break:break-all;}
 
-
 %c0{color:#000;}
 %c3{color:#333;}
 %c6{color:#666;}
@@ -85,9 +83,12 @@ $browser-default-font-size:40;//html根字号20px & 设计图640px
 
 %bdn{border:0 none;}
 
-
 //禁用长按选中文本功能
 %usn{user-select: none;}
 
 //内部边框
 %borderbox {box-sizing: border-box;}
+
+// display: flex;
+%df{display: flex;}
+%dif{display: inline-flex;}

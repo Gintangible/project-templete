@@ -2,7 +2,10 @@ const gulp = require('gulp');
 const runSequence = require('run-sequence'); //run-sequence  逐步执行任务
 const del = require('del');
 const fs = require('fs');
+<<<<<<< HEAD
 const path = require('path');
+=======
+>>>>>>> d5eebcd19f1d3678bd4c20c5b4dfb804b4f75bee
 const moment = require('moment');
 const plugins = require('gulp-load-plugins')(); //for gulp
 const spritesmith = require('gulp.spritesmith');
@@ -44,9 +47,14 @@ const paths = {
         dist: dist + 'js/'
     },
     minImg: {
+<<<<<<< HEAD
         src: src + 'images/',
         outSrc: 'images/',
         outCss: 'css/'
+=======
+        src: 'images/',
+        css: 'css/'
+>>>>>>> d5eebcd19f1d3678bd4c20c5b4dfb804b4f75bee
     }
 };
 
@@ -74,6 +82,7 @@ function getFolders(dir) { //获取文件目录
 }
 
 
+<<<<<<< HEAD
 const imageSpirt = getFolders(src + paths.minImg.src);
 imageSpirt.length && imageSpirt.forEach(
     icon => {
@@ -82,6 +91,17 @@ imageSpirt.length && imageSpirt.forEach(
                 .pipe(spritesmith({
                     imgName: paths.minImg.outSrc + icon + '.png', //保存合并后的名称
                     cssName: paths.minImg.outCss + icon + '.css', //保存合并后css样式的地址
+=======
+const imageSpirt = getFolders(paths.minImg.src);
+imageSpirt.length && imageSpirt.forEach(
+    icon => {
+        console.log(icon);
+        gulp.task(icon, function () {
+            gulp.src(paths.minImg.src + icon + '/*.png')
+                .pipe(spritesmith({
+                    imgName: paths.minImg.src + icon + '.png', //保存合并后的名称
+                    cssName: paths.minImg.css + icon + '.css', //保存合并后css样式的地址
+>>>>>>> d5eebcd19f1d3678bd4c20c5b4dfb804b4f75bee
                     padding: 10, //合并时两个图片的间距
                     algorithm: 'binary-tree', //注释1
                     //cssTemplate:'css/handlebarsStr.css'    //注释2
@@ -196,6 +216,7 @@ gulp.task('watch', ['server'], function () {
 });
 
 gulp.task('default', () => {
+<<<<<<< HEAD
 
     if (taskSrc.length) {
         paths.js.src && gulp.watch(paths.js.src, [...Object.keys(taskSrc)]);
@@ -204,6 +225,11 @@ gulp.task('default', () => {
     }
 
     // runSequence(['sass', 'html', 'image', 'temp', 'js', ...imageSpirt], 'watch');
+=======
+    runSequence(['sass', 'html', 'image', 'temp', 'js'], 'watch');
+    
+    runSequence([...imageSpirt])
+>>>>>>> d5eebcd19f1d3678bd4c20c5b4dfb804b4f75bee
 });
 
 gulp.task('clean', callback => {
