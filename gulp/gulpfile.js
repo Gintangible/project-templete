@@ -2,10 +2,7 @@ const gulp = require('gulp');
 const runSequence = require('run-sequence'); //run-sequence  逐步执行任务
 const del = require('del');
 const fs = require('fs');
-<<<<<<< HEAD
 const path = require('path');
-=======
->>>>>>> d5eebcd19f1d3678bd4c20c5b4dfb804b4f75bee
 const moment = require('moment');
 const plugins = require('gulp-load-plugins')(); //for gulp
 const spritesmith = require('gulp.spritesmith');
@@ -55,7 +52,7 @@ const paths = {
 
 // 合并js
 const taskSrc = {
-    // ab: ['a.js', 'b.js']
+    // ab: ['a.js', 'b.js','c.js']
 }
 
 for (let pro in taskSrc) {
