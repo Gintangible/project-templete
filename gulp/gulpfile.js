@@ -55,7 +55,7 @@ const paths = {
 
 // 合并js
 const taskSrc = {
-    // ab: ['a.js', 'b.js']
+    // ab: ['a.js', 'b.js','d.js']
 }
 
 for (let pro in taskSrc) {
