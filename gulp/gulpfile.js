@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const runSequence = require('run-sequence'); //run-sequence  逐步执行任务
 const del = require('del');
 const fs = require('fs');
-const path = require('path');
 const moment = require('moment');
 const plugins = require('gulp-load-plugins')(); //for gulp
 const spritesmith = require('gulp.spritesmith');
@@ -43,10 +42,10 @@ const paths = {
         src: src + 'js/*.js',
         dist: dist + 'js/'
     },
-    minImg: {
-        src: src + 'images/',
-        outSrc: 'images/',
-        outCss: 'css/'
+    sprites: {
+        src: src + 'sprites',
+        dist: src,
+        dist2: dist + 'sprites' //导出一份雪碧图的文件
     }
 };
 
@@ -75,36 +74,47 @@ function getFolders(dir) { //获取文件目录
 
 
 const imageSpirt = getFolders(src + paths.minImg.src);
-imageSpirt.length && imageSpirt.forEach(
-    icon => {
-        gulp.task(icon, function () {
-            gulp.src(paths.minImg.src + icon + '/*.png')
-                .pipe(spritesmith({
-                    imgName: paths.minImg.outSrc + icon + '.png', //保存合并后的名称
-                    cssName: paths.minImg.outCss + icon + '.css', //保存合并后css样式的地址
-                    padding: 10, //合并时两个图片的间距
-                    algorithm: 'binary-tree', //注释1
-                    //cssTemplate:'css/handlebarsStr.css'    //注释2
-                    cssTemplate: function (data) { //如果是函数的话，这可以这样写
-                        var arr = [];
-                        data.sprites.forEach(function (sprite) {
-                            arr.push("." + icon + "-" + sprite.name +
-                                "{" +
-                                "background-image: url('" + sprite.escaped_image + "');" +
-                                "background-repeat: no-repeat;" +
-                                "background-position: " + sprite.px.offset_x + " " + sprite.px.offset_y + ";" +
-                                "background-size: " + sprite.px.width + " " + sprite.px.height + ";" +
-                                "width: " + sprite.px.width + ";" +
-                                "height: " + sprite.px.height + ";" +
-                                "}\n");
-                        });
-                        return arr.join("");
-                    }
-                }))
-                .pipe(gulp.dest(dist)); //输出目录
-        });
-    }
-);
+let spritesTask = []; // 用于 gulp task
+let spritesFiles = []; // 用于watch
+
+imageSpirt.length && imageSpirt.forEach(function (icon, index) {
+    // 雪碧图标识
+    spritesTask.push(icon + "sprite");
+    spritesFiles.push(paths.sprites.src + '/' + icon + "/**");
+    gulp.task(icon + "sprite", () => {
+        return gulp.src(paths.sprites.src + '/' + icon + "/*.png")
+            .pipe(spritesmith({
+                imgName: 'images/' + icon + '_sprite.png', //合并后大图的名称
+                cssName: 'sass/_' + icon + 'sprite.scss',
+                padding: 10, // 每个图片之间的间距，默认为0px
+                cssTemplate: (data) => {
+                    // data为对象，保存合成前小图和合成打大图的信息包括小图在大图之中的信息
+                    let arr = [],
+                        width = data.spritesheet.px.width,
+                        height = data.spritesheet.px.height,
+                        url = data.spritesheet.image
+                    // console.log(data)
+                    data.sprites.forEach(function (sprite) {
+                        arr.push(
+                            "." + icon + "_" + sprite.name +
+                            "{" +
+                            "background: url('" + url + "') " +
+                            "no-repeat " +
+                            sprite.px.offset_x + " " + sprite.px.offset_y + ";" +
+                            "background-size: " + width + " " + height + ";" +
+                            "width: " + sprite.px.width + ";" +
+                            "height: " + sprite.px.height + ";" +
+                            "}\n"
+                        )
+                    });
+                    return arr.join("")
+                }
+            }))
+            .pipe(gulp.dest(paths.sprites.dist)) // 保存到src下，供scss引入
+            .pipe(gulp.dest(paths.sprites.dist2)) // 生成到dist下，备份
+            .pipe(plugins.connect.reload());
+    })
+});
 
 gulp.task('html', () => {
     return gulp.src(paths.html.src)
@@ -130,7 +140,7 @@ gulp.task('sass', () => {
 });
 
 
-
+// 压缩图片
 gulp.task('image', () => {
     return gulp.src(paths.images.src)
         .pipe(plugins.if(prod, plugins.imagemin()))
@@ -138,6 +148,7 @@ gulp.task('image', () => {
         .pipe(plugins.connect.reload());
 });
 
+// 压缩temp图片
 gulp.task('temp', () => {
     return gulp.src(paths.temp.src)
         .pipe(plugins.if(prod, plugins.imagemin()))
@@ -145,7 +156,7 @@ gulp.task('temp', () => {
         .pipe(plugins.connect.reload());
 });
 
-
+// 压缩js
 gulp.task('js', () => {
     return gulp.src(paths.js.src)
         .pipe(plugins.jshint())
@@ -166,6 +177,7 @@ gulp.task('zip', function () {
         .pipe(gulp.dest('./'));
 });
 
+// 打开服务器
 gulp.task('server', () => {
     plugins.connect.server({
         root: dist,
@@ -175,7 +187,16 @@ gulp.task('server', () => {
     });
 });
 
+// watch
 gulp.task('watch', ['server'], function () {
+
+    // 检测压缩图片
+    if (paths.sprites.src) {
+        spritesFiles.length && spritesFiles.forEach((file, index) => {
+            gulp.watch(file, [spritesTask[index]]);
+        })
+    }
+
     paths.html.src && gulp.watch(paths.html.src, ['html']);
     paths.sass.src && gulp.watch(paths.sass.src, ['sass']);
     paths.images.src && gulp.watch(paths.images.src, ['image']);
@@ -186,35 +207,29 @@ gulp.task('watch', ['server'], function () {
     } else {
         paths.js.src && gulp.watch(paths.js.src, ['js']);
     }
-
-    if (imageSpirt.length) {
-        imageSpirt.forEach(img => {
-            paths.minImg.src + img && gulp.watch(paths.minImg.src + img, [...imageSpirt]);
-        })
-    }
-
 });
 
 gulp.task('default', () => {
-    if (taskSrc.length) {
-        paths.js.src && gulp.watch(paths.js.src, [...Object.keys(taskSrc)]);
-    } else {
-        runSequence(['sass', 'html', 'image', 'temp', 'js'], 'watch');
-    }
+    // 是否有雪碧图
+    // images sass 放最后
+    runSequence([...spritesTask, 'vendor', 'html', 'temp', 'js', 'image', 'sass'], 'watch');
 
-    // runSequence(['sass', 'html', 'image', 'temp', 'js', ...imageSpirt], 'watch');
+    // paths.js.src && gulp.watch(paths.js.src, [...Object.keys(taskSrc)]);
 });
 
+// 清空文件夹及zip文件
 gulp.task('clean', callback => {
     del('*.zip');
     del('dist').then(paths => callback());
 });
 
+// 打包
 gulp.task('build', ['clean'], function (callback) {
     prod = true;
-    runSequence(['sass', 'html', 'image', 'temp', 'js']);
+    runSequence([...spritesTask, 'vendor', 'html', 'temp', 'js', 'image', 'sass']);
 });
 
+// 清理node——modules
 gulp.task('cleanModule', callback => {
     del('node_modules').then(paths => callback());
 });
